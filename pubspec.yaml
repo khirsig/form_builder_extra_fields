@@ -6,6 +6,7 @@ homepage: https://github.com/flutter-form-builder-ecosystem
 repository: https://github.com/flutter-form-builder-ecosystem/form_builder_extra_fields
 funding:
   - https://opencollective.com/flutter-form-builder-ecosystem
+publish_to: none
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -14,7 +15,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_form_builder: ^9.0.0
+  flutter_form_builder:
+    git:
+      url: https://github.com/khirsig/flutter_form_builder
+      ref: clearButton
   flutter_colorpicker: ^1.0.3
   dropdown_search: ^5.0.6
   signature: ^5.3.2
