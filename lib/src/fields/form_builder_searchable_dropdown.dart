@@ -125,6 +125,7 @@ class FormBuilderSearchableDropdown<T> extends FormBuilderFieldDecoration<T> {
     this.clearButtonProps,
     this.dropdownSearchTextStyle,
     this.dropdownButtonProps,
+    Icon? resetIcon,
   })  : assert(T == String || compareFn != null),
         isMultiSelectionMode = false,
         dropdownBuilderMultiSelection = null,
@@ -136,33 +137,37 @@ class FormBuilderSearchableDropdown<T> extends FormBuilderFieldDecoration<T> {
         super(
           builder: (FormFieldState<T?> field) {
             final state = field as FormBuilderSearchableDropdownState<T>;
-            return InputDecorator(
-              decoration: decoration,
-              child: DropdownSearch<T>(
-                // Hack to rebuild when didChange is called
-                asyncItems: asyncItems,
-                clearButtonProps: clearButtonProps ?? const ClearButtonProps(),
-                compareFn: compareFn,
-                enabled: state.enabled,
-                dropdownBuilder: dropdownBuilder,
-                dropdownButtonProps:
-                    dropdownButtonProps ?? const DropdownButtonProps(),
-                dropdownDecoratorProps: DropDownDecoratorProps(
-                  dropdownSearchDecoration: state.decoration,
-                  textAlign: dropdownSearchTextAlign,
-                  textAlignVertical: dropdownSearchTextAlignVertical,
-                  baseStyle: dropdownSearchTextStyle,
-                ),
-                filterFn: filterFn,
-                items: items,
-                itemAsString: itemAsString,
-                onBeforeChange: onBeforeChange,
-                onChanged: (value) {
-                  state.didChange(value);
-                },
-                popupProps: popupProps,
-                selectedItem: state.value,
+            return DropdownSearch<T>(
+              // Hack to rebuild when didChange is called
+              asyncItems: asyncItems,
+              clearButtonProps: clearButtonProps ?? const ClearButtonProps(),
+              compareFn: compareFn,
+              enabled: state.enabled,
+              dropdownBuilder: dropdownBuilder,
+              dropdownButtonProps:
+                  dropdownButtonProps ?? const DropdownButtonProps(),
+              dropdownDecoratorProps: DropDownDecoratorProps(
+                dropdownSearchDecoration: state.decoration.copyWith(
+                    suffixIcon: resetIcon != null
+                        ? IconButton(
+                            onPressed: () {
+                              state.didChange(null);
+                            },
+                            icon: resetIcon)
+                        : null),
+                textAlign: dropdownSearchTextAlign,
+                textAlignVertical: dropdownSearchTextAlignVertical,
+                baseStyle: dropdownSearchTextStyle,
               ),
+              filterFn: filterFn,
+              items: items,
+              itemAsString: itemAsString,
+              onBeforeChange: onBeforeChange,
+              onChanged: (value) {
+                state.didChange(value);
+              },
+              popupProps: popupProps,
+              selectedItem: state.value,
             );
           },
         );
