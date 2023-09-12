@@ -136,30 +136,33 @@ class FormBuilderSearchableDropdown<T> extends FormBuilderFieldDecoration<T> {
         super(
           builder: (FormFieldState<T?> field) {
             final state = field as FormBuilderSearchableDropdownState<T>;
-            return DropdownSearch<T>(
-              // Hack to rebuild when didChange is called
-              asyncItems: asyncItems,
-              clearButtonProps: clearButtonProps ?? const ClearButtonProps(),
-              compareFn: compareFn,
-              enabled: state.enabled,
-              dropdownBuilder: dropdownBuilder,
-              dropdownButtonProps:
-                  dropdownButtonProps ?? const DropdownButtonProps(),
-              dropdownDecoratorProps: DropDownDecoratorProps(
-                dropdownSearchDecoration: state.decoration,
-                textAlign: dropdownSearchTextAlign,
-                textAlignVertical: dropdownSearchTextAlignVertical,
-                baseStyle: dropdownSearchTextStyle,
+            return InputDecorator(
+              decoration: decoration,
+              child: DropdownSearch<T>(
+                // Hack to rebuild when didChange is called
+                asyncItems: asyncItems,
+                clearButtonProps: clearButtonProps ?? const ClearButtonProps(),
+                compareFn: compareFn,
+                enabled: state.enabled,
+                dropdownBuilder: dropdownBuilder,
+                dropdownButtonProps:
+                    dropdownButtonProps ?? const DropdownButtonProps(),
+                dropdownDecoratorProps: DropDownDecoratorProps(
+                  dropdownSearchDecoration: state.decoration,
+                  textAlign: dropdownSearchTextAlign,
+                  textAlignVertical: dropdownSearchTextAlignVertical,
+                  baseStyle: dropdownSearchTextStyle,
+                ),
+                filterFn: filterFn,
+                items: items,
+                itemAsString: itemAsString,
+                onBeforeChange: onBeforeChange,
+                onChanged: (value) {
+                  state.didChange(value);
+                },
+                popupProps: popupProps,
+                selectedItem: state.value,
               ),
-              filterFn: filterFn,
-              items: items,
-              itemAsString: itemAsString,
-              onBeforeChange: onBeforeChange,
-              onChanged: (value) {
-                state.didChange(value);
-              },
-              popupProps: popupProps,
-              selectedItem: state.value,
             );
           },
         );
